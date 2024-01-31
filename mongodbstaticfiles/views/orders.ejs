@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Users Data</title>
+</head>
+<body>
+    <h1>Orders Data</h1>
+    <table>
+        <tr>
+            <th>Sr.No.</th>
+            <th>customer Id</th>
+            <th>Product</th>
+            <th>Product Quantity</th>
+        </tr>
+       <!-- Loop over the users Object -->
+       <%  orders.forEach((order)=>{%>
+            <tr>
+                <td><%=order.customerId%></td>
+                <td><%=order.product%></td>
+                <td><%=order.quantity%></td>
+            </tr>
+     <%  })  %>
+    </table>
+</body>
+</html>

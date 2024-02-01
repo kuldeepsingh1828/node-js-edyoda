@@ -6,6 +6,7 @@
     <title>All Users Data</title>
 </head>
 <body>
+    <button><a href="add">Add Order</a></button>
     <h1>Orders Data</h1>
     <table>
         <tr>
@@ -15,11 +16,14 @@
             <th>Product Quantity</th>
         </tr>
        <!-- Loop over the users Object -->
-       <%  orders.forEach((order)=>{%>
+       <%  orders.forEach((order,i)=>{%>
             <tr>
+                <td><%=(i+1)%></td>
                 <td><%=order.customerId%></td>
                 <td><%=order.product%></td>
                 <td><%=order.quantity%></td>
+                <td><a href="edit/<%=order['_id']%>">edit</a></td>
+                <td><a href="delete/<%=order['_id']%>">Delete</a></td>
             </tr>
      <%  })  %>
     </table>

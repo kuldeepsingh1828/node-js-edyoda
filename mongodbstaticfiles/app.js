@@ -1,15 +1,34 @@
 var express = require('express');
 var http = require('http');
 var app = express();
-var userRoute = require('./routes/userRoute');
-var orderRoute = require('./routes/orderRoute');
-var connection = require('./data/connection'); 
-
+var jwt = require('jsonwebtoken');
 app.set('view engine','ejs');
+var adminRoute = require('./routes/adminRoute');
+
+app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-app.use('/user',userRoute);
-app.use('/order',orderRoute);
+
+app.use('/admin',adminRoute);
+const authenicateJWT = (req,res,next)=>{
+    if(req.query.token){
+        //verify token
+        jwt.verify(req.query.token,'secret',(err,decode)=>{
+            if(err){
+                res.json({message:'Invalid token'});
+            }else{
+               next();
+            }
+        });
+    }else{
+        res.json({error:'Where is token?'});
+    }
+};
+
+app.get('/',authenicateJWT,(req,res,next)=>{
+    res.send('Hello World 2');
+});
+
 
 
 const server =http.createServer(app);

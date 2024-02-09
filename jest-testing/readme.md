@@ -1,3 +1,30 @@
+/users         ---- GET
+/users/create  ---- POST and data
+/users/${id}   ---- PUT and Data
+/users/${id}   ---- DELETE
+
+
+create a CRUD based application for users
+use websocket to perform CRUD
+testing on same application
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 npm install jest supertest --save-dev
 
 

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Websocket CRUD</title>
+</head>
+<body>
+    <div>
+        <h1>Users Websocket CRUD</h1>
+        <div>
+            <h2>Users</h2>
+            <div>
+                <button id="createUser">Create User</button>
+            </div>
+            <div id="users">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersList">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    //websocket connection
+    const ws = new WebSocket('ws://localhost:8081');
+    ws.onopen = () => {
+        console.log('Connected to the server');
+        ws.send(JSON.stringify({type: 'getUsers'}));
+    };
+
+    ws.onmessage = (message) => {
+        const response = JSON.parse(message.data);
+        if(response.type === 'users') {
+            const users = response.data;
+            const usersList = document.getElementById('usersList');
+            usersList.innerHTML = users.map(user => {
+                return `
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>
+                        <button onclick="updateUser(${user.id})">Update</button>
+                        <button onclick="deleteUser(${user.id})">Delete</button>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+        }
+        };
+
+        document.getElementById('createUser').addEventListener('click', () => {
+            ws.send(JSON.stringify({type: 'createUser', data: {name: 'User 1'}}));
+        });
+        function deleteUser(id) {
+            ws.send(JSON.stringify({type: 'deleteUser', data: {id}}));
+        }
+        function updateUser(id) {
+            ws.send(JSON.stringify({type: 'updateUser', data: {id}}));
+        }
+</script>
